@@ -1,0 +1,92 @@
+<div class='row'>
+    <div class='col-12'>
+        <div class='card'>
+            <div class='card-body'>
+                <h4 class='card-title'>Create a New Inventory Item</h4>
+                <p class='text-success'>{{status}}</p>
+                <form class='form-row' *ngIf='inventory'>
+                        <div class='form-group col-sm-12 col-md-6 col-lg-3'>
+                            <label>Product Name</label>
+                            <input class='form-control form-control-sm' type='text' [(ngModel)]='inventory.product_name' name='product_name'>
+                            <div *ngIf='error_inventory.product_name'>
+                                <p class='text-danger' *ngFor='let error of error_inventory.product_name'>{{error}}</p>
+                            </div>
+                        </div>
+                        <div class='form-group col-sm-12 col-md-6 col-lg-3'>
+                            <label>Vendor</label>
+                            <input class='form-control form-control-sm' type='text' [(ngModel)]='inventory.vendor' name='vendor_name'>
+                            <div *ngIf='error_inventory.vendor'>
+                                <p class='text-danger'  *ngFor='let error of error_inventory.vendor'>{{error}}</p>
+                            </div>
+                        </div>
+                        <div class='form-group col-sm-12 col-md-6 col-lg-3'>
+                            <label>MRP</label>
+                            <input class='form-control form-control-sm' type='text' placeholder='INR' [(ngModel)]='inventory.mrp' name='mrp'>
+                            <div *ngIf='error_inventory.mrp'>
+                                <p class='text-danger' *ngFor='let error of error_inventory.mrp'>{{error}}</p>
+                            </div>
+                        </div>
+                        <div class='form-group col-sm-12 col-md-6 col-lg-3'>
+                            <label>Batch Number</label>
+                            <input class='form-control form-control-sm' type='text' [(ngModel)]='inventory.batch_number' name='batch_number'>
+                            <div *ngIf='error_inventory.batch_number'>
+                                <p class='text-danger' *ngFor='let error of error_inventory.batch_number'>{{error}}</p>
+                            </div>
+                        </div>
+                        <div class='form-group col-sm-12 col-md-6 col-lg-3'>
+                            <label>Batch Date</label>
+                            <input class='form-control form-control-sm' type='text' placeholder='YYYY-MM-DD'  [(ngModel)]='inventory.batch_date' name='batch_date'>
+                            <div *ngIf='error_inventory.batch_date'>
+                                <p class='text-danger' *ngFor='let error of error_inventory.batch_date'>{{error}} </p>
+                            </div>
+                        </div>
+                        <div class='form-group col-sm-12 col-md-6 col-lg-3'>
+                            <label>Quantity</label>
+                            <input class='form-control form-control-sm' type='text'   [(ngModel)]='inventory.quantity' name='quantity'>
+                            <div *ngIf='error_inventory.quantity'>
+                                <p class='text-danger' *ngFor='let error of error_inventory.quantity'>{{error}} </p>
+                            </div>
+                        </div>
+                        <div class='form-group col-12'>
+                            <button class='btn btn-primary btn-sm' (click)='create()'>Create</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-12'>
+        <div class='card'>
+            <div class='card-body'>
+                <h4 class='card-title'>Inventory Items</h4>
+                <p class='text-success'>{{status_approve}}</p>
+                <p class='text-success'>{{status_approve_error}}</p>
+                <table class='table'>
+                    <thead>
+                        <th>Product Name</th>
+                        <th>Vendor</th>
+                        <th>MRP</th>
+                        <th>Batch Number</th>
+                        <th>Batch Date</th>
+                        <th>Quantity Date</th>
+                        <th>Status</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of inventory_list">
+                            <td>{{item.product_name}}</td>
+                            <td>{{item.vendor}}</td>
+                            <td>{{item.mrp}}</td>
+                            <td>{{item.batch_number}}</td>
+                            <td>{{item.batch_date}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td *ngIf="item.status === 'Approved'"><button class='btn btn-sm btn-primary' disabled>Approved</button></td>
+                            <td *ngIf="auth.getUser().is_assistant && item.status==='Pending'"><button class='btn btn-sm btn-primary' disabled>{{item.status}}</button></td>
+                            <td><button  *ngIf="item.status === 'Pending' && auth.getUser().is_manager" class='btn btn-sm btn-primary' (click)='approve(item.id)'>Approve</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
